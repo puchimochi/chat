@@ -1,7 +1,30 @@
-@(message: String)
+@(title: String)(articleForm:Form[Article])(articles: List[Article])
 
-@main("Welcome to Play 2.1") {
+@import helper._
+@main(title) {
     
-    @play20.welcome(message, style = "Java")
+    <h1>@title</h1>
+    @form(routes.Application.newArticle()){
+        @inputText(articleForm("name"),'_label->"名前")
+        @inputText(articleForm("mail"),'_label->"メールアドレス")
+        @checkbox(articleForm("isMailPrivate"),'_label->"非公開")
+        @textarea(articleForm("content"),'_label->"内容")
+        <input type="submit" value="投稿">
+    }
+        
+       <div>
+        @for(article <- articles) {
+            <div>
+                <p>投稿者: @article.name</p>
+                <p>メールアドレス: @article.showMail()</p>
+                <p>投稿日時: @article.getTimeString</p>
+                <p> @article.content</p>
+            </div>
+            
+            }
+       </div>
+    
     
 }
+
+
